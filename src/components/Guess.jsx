@@ -27,6 +27,7 @@ export default function Guess() {
   const [solution, setSolution] = useState([]);
   const [guesses, setGuesses] = useState([]);
   const [coloursInOrder, setColoursInOrder] = useState(0);
+  const [guessesLeft, setGuessesLeft] = useState(21);
 
   const [swapIndices, setSwapIndices] = useState({
     colour1: null,
@@ -55,6 +56,7 @@ export default function Guess() {
       }
     });
     setColoursInOrder(counter);
+    setGuessesLeft((prev) => prev - 1);
   };
 
   useEffect(() => {
@@ -64,10 +66,6 @@ export default function Guess() {
 
     setGuesses([...random10colours].sort(() => Math.random() - 0.5));
   }, []);
-
-  useEffect(() => {
-    countOrder();
-  }, [solution]);
 
   useEffect(() => {
     if (swapIndices.colour1 !== null && swapIndices.colour2 !== null) {
@@ -87,7 +85,7 @@ export default function Guess() {
         {guesses.map((guess, index) => (
           <button
             key={guess.hex}
-            className={`rounded-full transition-all duration-300 ease-in-out
+            className={`rounded-full transition-all duration-300 ease-in-out flex items-center justify-center
         ${
           index === swapIndices.colour1 || index === swapIndices.colour2
             ? "size-28"
@@ -100,14 +98,18 @@ export default function Guess() {
       </div>
 
       <button
-        className=" bg-white w-40 h-10 font-semibold rounded-md text-lg"
+        disabled={!guessesLeft}
+        className=" bg-white w-40 h-10 font-semibold rounded-md text-lg disabled:bg-[#c0c0c0] disabled:cursor-not-allowed"
         onClick={countOrder}
       >
         Guess
       </button>
-      <span className=" text-white font-black text-xl">
-        In order: {coloursInOrder}
-      </span>
+      <div className="flex flex-col w-full gap-2 items-center justify-center text-white font-black text-xl">
+        <span>In order: {coloursInOrder}</span>
+        <span className="">
+          Guesses left: {guessesLeft === 21 ? "20" : guessesLeft}
+        </span>
+      </div>
     </div>
   );
 }

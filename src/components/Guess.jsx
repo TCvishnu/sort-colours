@@ -83,7 +83,7 @@ export default function Guess() {
 
   return (
     <div className="w-fll flex flex-col items-center justify-center gap-20">
-      <div className="w-full flex items-center justify-center gap-2">
+      <div className="w-full flex flex-wrap items-center justify-center gap-2">
         {guesses.map((guess, index) => (
           <button
             key={guess.hex}
